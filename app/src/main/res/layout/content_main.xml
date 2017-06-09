@@ -15,9 +15,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/hello"/>
     <!-- TODO Jar mit Papier füllen, sobald etwas drin ist-->
     <!-- TODO Andere Farben, Lila Orange?-->
+    <!-- TODO Schönes Logo?-->
+
 
 
 </android.support.constraint.ConstraintLayout>
