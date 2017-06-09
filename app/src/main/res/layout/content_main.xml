@@ -16,5 +16,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <!-- TODO Jar mit Papier füllen, sobald etwas drin ist-->
+    <!-- TODO Andere Farben, Lila Orange?-->
+
 
 </android.support.constraint.ConstraintLayout>
