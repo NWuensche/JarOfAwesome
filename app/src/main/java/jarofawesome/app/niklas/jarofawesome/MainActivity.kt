@@ -31,6 +31,11 @@ class MainActivity : AppCompatActivity() {
             }.show()
         }
 
+        //TODO Update Tests
+        //TODO 2. Activity weg
+        //TODO SQLite mit Anko
+        //TODO END Nur wichtige Anko Sachen importieren, nicht alle
+
 
 
 
