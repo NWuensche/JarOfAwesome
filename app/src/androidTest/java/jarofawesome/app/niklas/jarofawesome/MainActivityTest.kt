@@ -4,8 +4,7 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
-import android.support.test.espresso.matcher.ViewMatchers.withId
+import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.runner.AndroidJUnit4
 
 import org.junit.Test
@@ -18,7 +17,7 @@ import org.junit.Assert.*
 
  * @see [Testing documentation](http://d.android.com/tools/testing)
  */
-class ExampleInstrumentedTest : SuperEspresso() {
+class MainActivityTest : SuperEspresso() {
     @Test
     @Throws(Exception::class)
     fun useAppContext() {
@@ -29,10 +28,10 @@ class ExampleInstrumentedTest : SuperEspresso() {
     }
 
     @Test
-    fun testSwitchToAddActivity() {
+    fun testOpenSaveDialog() {
         onView(withId(R.id.hello)).check(matches(isDisplayed()))
         onView(withId(R.id.fab)).perform(click())
-        onView(withId(R.id.addText)).check(matches(isDisplayed()))
+        onView(withHint("Something Awesome")).check(matches(isDisplayed()))
     }
 
 

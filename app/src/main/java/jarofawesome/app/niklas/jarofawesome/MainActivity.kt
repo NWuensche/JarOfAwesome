@@ -19,13 +19,10 @@ class MainActivity : AppCompatActivity() {
             alert {
                 customView {
                     verticalLayout {
-                        val familyName = editText {
-                            hint = "Family name"
+                        val newRecord = editText {
+                            hint = "Something Awesome"
                         }
-                        val firstName = editText {
-                            hint = "First name"
-                        }
-                        positiveButton("Register") { /* register(familyName.text, firstName.text)*/ }
+                        positiveButton("Save") { /* register(familyName.text, firstName.text)*/ }
                     }
                 }
             }.show()
