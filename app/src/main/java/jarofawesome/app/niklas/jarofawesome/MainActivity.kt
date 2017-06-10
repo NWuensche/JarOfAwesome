@@ -2,15 +2,21 @@ package jarofawesome.app.niklas.jarofawesome
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import jarofawesome.app.niklas.jarofawesome.R.id.action_settings
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.*
+import org.jetbrains.anko.db.dropTable
+import org.jetbrains.anko.db.insert
+import org.jetbrains.anko.db.select
 
 class MainActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val db = MyDatabaseOpenHelper(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
@@ -22,7 +28,7 @@ class MainActivity : AppCompatActivity() {
                         val newRecord = editText {
                             hint = "Something Awesome"
                         }
-                        positiveButton("Save") { /* register(familyName.text, firstName.text)*/ }
+                        positiveButton("Save") { saveToDB(newRecord.text.toString()) }
                     }
                 }
             }.show()
@@ -55,5 +61,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    fun saveToDB(newRecord: String) {
+        database.use {
+            insert("Record",
+                    "id" to select("Record").exec { (columnCount).toString() },
+                    "Stuff" to newRecord)
+        }
     }
 }
