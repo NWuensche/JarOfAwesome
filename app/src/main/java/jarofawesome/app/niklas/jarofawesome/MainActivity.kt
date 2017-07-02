@@ -7,12 +7,9 @@ import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.customView
+import org.jetbrains.anko.*
 import org.jetbrains.anko.db.dropTable
 import org.jetbrains.anko.db.insert
-import org.jetbrains.anko.editText
-import org.jetbrains.anko.verticalLayout
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,9 +33,13 @@ class MainActivity : AppCompatActivity() {
 
         hello.visibility = if(database.rowCount() > 0) View.VISIBLE else View.GONE
 
+        hello.setOnClickListener {
+            toast(database.randomQuote())
+        }
+
+
+
         //TODO Update Tests
-        //TODO 2. Activity weg
-        //TODO SQLite mit Anko
         //TODO END Nur wichtige Anko Sachen importieren, nicht alle
 
 

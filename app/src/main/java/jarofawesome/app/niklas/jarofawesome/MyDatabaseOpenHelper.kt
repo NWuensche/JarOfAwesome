@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import org.jetbrains.anko.db.*
+import java.util.*
 
 class MyDatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, MyDatabaseOpenHelper.DATABASE_NAME, null, MyDatabaseOpenHelper.DATABASE_VERSION) {
 
@@ -47,5 +48,16 @@ fun MyDatabaseOpenHelper.rowCount(): Int =
         use {
             select("TABLE1").exec {
                 count
+            }
+        }
+
+fun MyDatabaseOpenHelper.randomQuote(): String =
+        use {
+            val rows = rowCount()
+            select("TABLE1", "QUOTE").exec {
+                asSequence()
+                        .elementAt((Math.random() * rows)
+                                .toInt())[0]
+                        as String
             }
         }
