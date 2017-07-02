@@ -1,22 +1,24 @@
 package jarofawesome.app.niklas.jarofawesome
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import jarofawesome.app.niklas.jarofawesome.R.id.action_settings
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.*
-import org.jetbrains.anko.db.dropTable
-import org.jetbrains.anko.db.insert
-import org.jetbrains.anko.db.select
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.customView
+import org.jetbrains.anko.editText
+import org.jetbrains.anko.verticalLayout
+import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
 
+    private var dbHelper by Delegates.notNull<MyDatabaseOpenHelper>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val db = MyDatabaseOpenHelper(this)
+        dbHelper = MyDatabaseOpenHelper(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
@@ -64,10 +66,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun saveToDB(newRecord: String) {
-        database.use {
-            insert("Record",
-                    "id" to select("Record").exec { (columnCount).toString() },
-                    "Stuff" to newRecord)
-        }
+        val db = dbHelper.writableDatabase
+
+        val values = ContentValues()
+        values.put("QUOTE", newRecord)
+        val newRowId = db.insert("TABLE1", null, values)
+        val test = 1
     }
 }

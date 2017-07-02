@@ -1,39 +1,36 @@
 package jarofawesome.app.niklas.jarofawesome
 
 import android.content.Context
+
 import android.database.sqlite.SQLiteDatabase
-import org.jetbrains.anko.db.*
+import android.database.sqlite.SQLiteOpenHelper
 
-/**
- * @author nwuensche
- */
-class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "JarDB", null, 1) {
-    companion object {
-        private var instance: MyDatabaseOpenHelper? = null
+class MyDatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, MyDatabaseOpenHelper.DATABASE_NAME, null, MyDatabaseOpenHelper.DATABASE_VERSION) {
+    private val SQL_CREATE_ENTRIES =
+            "CREATE TABLE " + "TABLE1" + " (" +
+                    "MYID" + " INTEGER PRIMARY KEY," +
+                    "QUOTE" + " TEXT)"
 
-        @Synchronized
-        fun getInstance(ctx: Context): MyDatabaseOpenHelper {
-            if (instance == null) {
-                instance = MyDatabaseOpenHelper(ctx.applicationContext)
-            }
-            return instance!!
-        }
-    }
+    private val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + "TABLE1"
 
     override fun onCreate(db: SQLiteDatabase) {
-        // Here you create tables
-        db.createTable("Record", true,
-                "id" to INTEGER + PRIMARY_KEY,
-                "Stuff" to TEXT)
+        db.execSQL(SQL_CREATE_ENTRIES)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Here you can upgrade tables, as usual
-        db.dropTable("Record", true)
+        // This database is only a cache for online data, so its upgrade policy is
+        // to simply to discard the data and start over
+        db.execSQL(SQL_DELETE_ENTRIES)
+        onCreate(db)
     }
 
-}
+    override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        onUpgrade(db, oldVersion, newVersion)
+    }
 
-// Access property for Context
-val Context.database: MyDatabaseOpenHelper
-    get() = MyDatabaseOpenHelper.getInstance(applicationContext)
+    companion object {
+        // If you change the database schema, you must increment the database version.
+        val DATABASE_VERSION = 1
+        val DATABASE_NAME = "FeedReader.db"
+    }
+}
