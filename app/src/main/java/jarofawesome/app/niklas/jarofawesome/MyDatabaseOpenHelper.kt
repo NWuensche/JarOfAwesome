@@ -25,6 +25,28 @@ class MyDatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, 
         onUpgrade(db, oldVersion, newVersion)
     }
 
+    fun rowCount(): Int =
+        use {
+            select("TABLE1").exec {
+                count
+            }
+        }
+
+    fun randomQuote(): String =
+        use {
+            val rows = rowCount()
+            select("TABLE1", "QUOTE").exec {
+                asSequence()
+                        .elementAt((Math.random() * rows).toInt())[0] as String
+            }
+        }
+
+    fun setQuote(quote: String) =
+            use {
+                insert("TABLE1",
+                        "QUOTE" to quote)
+            }
+
     companion object {
         // If you change the database schema, you must increment the database version.
         val DATABASE_VERSION = 1
@@ -43,21 +65,3 @@ class MyDatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, 
 
 val Context.database: MyDatabaseOpenHelper
     get() = MyDatabaseOpenHelper.getInstance(getApplicationContext())
-
-fun MyDatabaseOpenHelper.rowCount(): Int =
-        use {
-            select("TABLE1").exec {
-                count
-            }
-        }
-
-fun MyDatabaseOpenHelper.randomQuote(): String =
-        use {
-            val rows = rowCount()
-            select("TABLE1", "QUOTE").exec {
-                asSequence()
-                        .elementAt((Math.random() * rows)
-                                .toInt())[0]
-                        as String
-            }
-        }

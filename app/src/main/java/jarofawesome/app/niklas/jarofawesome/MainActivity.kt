@@ -54,10 +54,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun saveToDB(newRecord: String) {
-        database.use{
-            insert("TABLE1",
-                    "QUOTE" to newRecord)
-        }
+        database.setQuote(newRecord)
         hello.visibility = View.VISIBLE
     }
 }
