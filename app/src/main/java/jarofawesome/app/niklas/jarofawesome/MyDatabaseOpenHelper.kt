@@ -7,12 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper
 import org.jetbrains.anko.db.*
 
 class MyDatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, MyDatabaseOpenHelper.DATABASE_NAME, null, MyDatabaseOpenHelper.DATABASE_VERSION) {
-    private val SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + "TABLE1" + " (" +
-                    "MYID" + " INTEGER PRIMARY KEY," +
-                    "QUOTE" + " TEXT)"
-
-    private val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + "TABLE1"
 
     override fun onCreate(db: SQLiteDatabase) {
         // Here you create tables
@@ -33,7 +27,7 @@ class MyDatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, 
     companion object {
         // If you change the database schema, you must increment the database version.
         val DATABASE_VERSION = 1
-        val DATABASE_NAME = "FeedReader.db"
+        val DATABASE_NAME = "QUOTES"
         private var instance: MyDatabaseOpenHelper? = null
 
             @Synchronized
@@ -48,3 +42,10 @@ class MyDatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, 
 
 val Context.database: MyDatabaseOpenHelper
     get() = MyDatabaseOpenHelper.getInstance(getApplicationContext())
+
+fun MyDatabaseOpenHelper.rowCount(): Int =
+        use {
+            select("TABLE1").exec {
+                count
+            }
+        }

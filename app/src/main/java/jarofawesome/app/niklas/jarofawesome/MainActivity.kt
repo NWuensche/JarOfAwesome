@@ -1,25 +1,23 @@
 package jarofawesome.app.niklas.jarofawesome
 
-import android.content.ContentValues
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import jarofawesome.app.niklas.jarofawesome.R.id.action_settings
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.customView
+import org.jetbrains.anko.db.dropTable
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.editText
 import org.jetbrains.anko.verticalLayout
-import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
 
-    private var dbHelper by Delegates.notNull<MyDatabaseOpenHelper>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        dbHelper = MyDatabaseOpenHelper(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
@@ -37,11 +35,12 @@ class MainActivity : AppCompatActivity() {
             }.show()
         }
 
+        hello.visibility = if(database.rowCount() > 0) View.VISIBLE else View.GONE
+
         //TODO Update Tests
         //TODO 2. Activity weg
         //TODO SQLite mit Anko
         //TODO END Nur wichtige Anko Sachen importieren, nicht alle
-
 
 
 
@@ -71,5 +70,6 @@ class MainActivity : AppCompatActivity() {
             insert("TABLE1",
                     "QUOTE" to newRecord)
         }
+        hello.visibility = View.VISIBLE
     }
 }
