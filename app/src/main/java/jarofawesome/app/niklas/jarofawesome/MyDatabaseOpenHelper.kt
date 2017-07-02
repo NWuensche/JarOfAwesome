@@ -4,8 +4,9 @@ import android.content.Context
 
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import org.jetbrains.anko.db.*
 
-class MyDatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, MyDatabaseOpenHelper.DATABASE_NAME, null, MyDatabaseOpenHelper.DATABASE_VERSION) {
+class MyDatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, MyDatabaseOpenHelper.DATABASE_NAME, null, MyDatabaseOpenHelper.DATABASE_VERSION) {
     private val SQL_CREATE_ENTRIES =
             "CREATE TABLE " + "TABLE1" + " (" +
                     "MYID" + " INTEGER PRIMARY KEY," +
@@ -14,14 +15,15 @@ class MyDatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, MyDatab
     private val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + "TABLE1"
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL(SQL_CREATE_ENTRIES)
+        // Here you create tables
+        db?.createTable("TABLE1", true,
+                "MYID" to INTEGER + PRIMARY_KEY,
+                "QUOTE" to TEXT)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // This database is only a cache for online data, so its upgrade policy is
-        // to simply to discard the data and start over
-        db.execSQL(SQL_DELETE_ENTRIES)
-        onCreate(db)
+        // Here you can upgrade tables, as usual
+        db?.dropTable("TABLE1", true)
     }
 
     override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -32,5 +34,17 @@ class MyDatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, MyDatab
         // If you change the database schema, you must increment the database version.
         val DATABASE_VERSION = 1
         val DATABASE_NAME = "FeedReader.db"
-    }
+        private var instance: MyDatabaseOpenHelper? = null
+
+            @Synchronized
+            fun getInstance(ctx: Context): MyDatabaseOpenHelper {
+                if (instance == null) {
+                    instance = MyDatabaseOpenHelper(ctx.applicationContext)
+                }
+                return instance!!
+            }
+        }
 }
+
+val Context.database: MyDatabaseOpenHelper
+    get() = MyDatabaseOpenHelper.getInstance(getApplicationContext())

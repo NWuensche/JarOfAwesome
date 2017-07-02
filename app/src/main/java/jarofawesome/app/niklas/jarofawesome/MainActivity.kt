@@ -9,6 +9,7 @@ import jarofawesome.app.niklas.jarofawesome.R.id.action_settings
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.customView
+import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.editText
 import org.jetbrains.anko.verticalLayout
 import kotlin.properties.Delegates
@@ -66,11 +67,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun saveToDB(newRecord: String) {
-        val db = dbHelper.writableDatabase
-
-        val values = ContentValues()
-        values.put("QUOTE", newRecord)
-        val newRowId = db.insert("TABLE1", null, values)
-        val test = 1
+        database.use{
+            insert("TABLE1",
+                    "QUOTE" to newRecord)
+        }
     }
 }
