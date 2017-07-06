@@ -1,15 +1,15 @@
 package jarofawesome.app.niklas.jarofawesome
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.*
-import org.jetbrains.anko.db.dropTable
-import org.jetbrains.anko.db.insert
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,7 +18,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener {
+        addQuote.setOnClickListener {
+
             alert {
                 customView {
                     verticalLayout {
@@ -31,19 +32,11 @@ class MainActivity : AppCompatActivity() {
             }.show()
         }
 
-        hello.visibility = if(database.rowCount() > 0) View.VISIBLE else View.GONE
+        showQuote.visibility = if(database.rowCount() > 0) View.VISIBLE else View.GONE
 
-        hello.setOnClickListener {
+        showQuote.setOnClickListener {
             toast(database.randomQuote())
         }
-
-
-
-        //TODO Update Tests
-        //TODO END Nur wichtige Anko Sachen importieren, nicht alle
-
-
-
 
     }
 
@@ -55,6 +48,6 @@ class MainActivity : AppCompatActivity() {
 
     fun saveToDB(newRecord: String) {
         database.setQuote(newRecord)
-        hello.visibility = View.VISIBLE
+        showQuote.visibility = View.VISIBLE
     }
 }

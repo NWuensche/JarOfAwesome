@@ -1,12 +1,11 @@
 package jarofawesome.app.niklas.jarofawesome
 
-import android.os.Build.VERSION_CODES.LOLLIPOP
-import org.junit.Test
-
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricGradleTestRunner
+import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
@@ -15,7 +14,7 @@ import org.robolectric.annotation.Config
 
  * @see [Testing documentation](http://d.android.com/tools/testing)
  */
-@RunWith(RobolectricGradleTestRunner::class)
+@RunWith(RobolectricTestRunner::class)
 @Config(constants = BuildConfig::class, sdk =
 intArrayOf(android.os.Build.VERSION_CODES.N), packageName = "jarofawesome.app.niklas.jarofawesome")
 class ExampleUnitTest {
@@ -36,10 +35,10 @@ class ExampleUnitTest {
     @Throws(Exception::class)
     fun testDbInsertion() {
         val testStr1 = "testing"
-        val testStr2 = "testing"
-        dbHelper.insertText(testStr1)
-        dbHelper.insertText(testStr2)
-        assertEquals(dbHelper.getAllText(),
-                "$testStr1-$testStr2-")
+        dbHelper.setQuote(testStr1)
+        assertTrue(dbHelper.contains(testStr1))
+        assertEquals(dbHelper.rowCount(), 1)
+        dbHelper.setQuote("testing2")
+        assertEquals(dbHelper.rowCount(), 2)
     }
 }

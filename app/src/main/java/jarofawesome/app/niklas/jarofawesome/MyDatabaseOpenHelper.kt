@@ -47,6 +47,14 @@ class MyDatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, 
                         "QUOTE" to quote)
             }
 
+    fun contains(quote: String) =
+        use{
+            select("TABLE1").whereArgs("QUOTE = '$quote'").exec {
+                asSequence()
+                        .any()
+            }
+        }
+
     companion object {
         // If you change the database schema, you must increment the database version.
         val DATABASE_VERSION = 1
